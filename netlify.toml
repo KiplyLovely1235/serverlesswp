@@ -1,6 +1,30 @@
 [functions]
   directory = "api"
-  included_files = ["wp/**", "node_modules/serverlesswp/wordpress-assets/**", "node_modules/serverlesswp/php-files/**"]
+  # Static assets (JS, images, fonts) are served from the CDN via wp-public, so they are
+  # excluded from the function bundle to stay under the 250 MB function size limit.
+  # JS files that PHP reads at runtime (e.g. wp-includes/js/tinymce, Elementor's
+  # assets/lib font-awesome mapping.js) are intentionally kept.
+  included_files = [
+    "wp/**",
+    "node_modules/serverlesswp/wordpress-assets/**",
+    "node_modules/serverlesswp/php-files/**",
+    "!wp/wp-includes/js/dist/**/*.js",
+    "!wp/wp-admin/js/**/*.js",
+    "!wp/wp-content/themes/**/*.js",
+    "!wp/wp-content/plugins/elementor/assets/js/**/*.js",
+    "!wp/wp-content/plugins/essential-addons-for-elementor-lite/assets/**/*.js",
+    "!wp/**/*.map",
+    "!wp/**/*.png",
+    "!wp/**/*.jpg",
+    "!wp/**/*.jpeg",
+    "!wp/**/*.gif",
+    "!wp/**/*.webp",
+    "!wp/**/*.ico",
+    "!wp/**/*.woff",
+    "!wp/**/*.woff2",
+    "!wp/**/*.otf",
+    "!wp/**/*:Zone.Identifier",
+  ]
 [[redirects]]
   from = "/*"
   to = "/.netlify/functions/index/:splat"
